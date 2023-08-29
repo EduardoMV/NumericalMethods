@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # Parámetros de entrada
 f = lambda x: x * np.sin(x) - 1
 # Rango de nuestra función
-a0 = 0.5
+a0 = 0
 b0 = 2
 #Para que pueda salir del ciclo x10^-6
 tol = 1e-6
@@ -24,14 +24,15 @@ print('------------------------------------------------------------')
 Data = np.empty((0,6), float)
 
 
-ak = 0
+ak = a0
 bk = b0
 for k in range(max_iter):
+    get_c = lambda a,b: b - f(b)*((b - a)/(f(b) - f(a)))
     fak = f(ak)
     fbk = f(bk)
-    ck = 0.5 * (ak+bk)
+    ck = get_c(ak, bk)
     fck = f(ck)
-    print('{:<9.6f} {:<9.6f} {:<9.6f} {:<9.6f} {:<9.6f} {:<9.6f}'.format(ak, ck, ck, fak, fck, fbk))
+    print('{:<9.6f} {:<9.6f} {:<9.6f} {:<9.6f} {:<9.6f} {:<9.6f}'.format(ak, ck, bk, fak, fck, fbk))
 
     data = np.array([[ak, ck, bk, fak, fck, fbk]])
     Data = np.concatenate((Data, data), axis=0)
@@ -49,45 +50,4 @@ for k in range(max_iter):
         
     if abs(fck)<=tol:
         break
-
 # %%
-#Graficación
-print(Data[-1,1])
-Data[:,0] #Las x
-Data[:,1] #Las y
-
-#La C (Solución) (CK) de la última fila
-
-x = np.linspace(xmin2plot, xmax2plot, points)
-y = f(x)
-solLine = np.array([[ck, 2], [ck, -2]])
-# solLine = np.array([[Data[-1,1],2], [Data[-1,1],-2]])
-# %%
-#solLine[:,0]
-#solLine[:,1]
-print(solLine)
-print(solLine.shape)
-print(Data.shape)
-# %%
-fig = plt.figure(1)
-ax = fig.add_subplot(1,1,1)
-ax.plot(x,y,label = 'Ecuación')
-ax.plot(solLine[:,0], solLine[:,1], label = "Solución")
-ax.plot([xmin2plot, xmax2plot], [0,0], 'r')
-# ax.plot([xmin2plot, xmax2plot], [0,0], label = '_nolegend_')
-ax.legend()
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-
-# %%
-fig = plt.figure(1)
-ax = fig.add_subplot(1,1,1)
-ax.plot(x,y,label = 'Ecuación')
-ax.plot(solLine[:,0], solLine[:,1], label = "Solución")
-ax.plot([xmin2plot, xmax2plot], [0,0], 'k')
-# ax.plot([xmin2plot, xmax2plot], [0,0], label = '_nolegend_')
-ax.legend()
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-ax.grid(True)
-ax.set_xlim([xmin2plot, xmax2plot])
