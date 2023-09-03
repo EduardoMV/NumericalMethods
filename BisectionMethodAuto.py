@@ -31,7 +31,7 @@ for k in range(max_iter):
     fbk = f(bk)
     ck = 0.5 * (ak+bk)
     fck = f(ck)
-    print('{:<9.6f} {:<9.6f} {:<9.6f} {:<9.6f} {:<9.6f} {:<9.6f}'.format(ak, ck, ck, fak, fck, fbk))
+    print('{:<9.6f} {:<9.6f} {:<9.6f} {:<9.6f} {:<9.6f} {:<9.6f}'.format(ak, ck, bk, fak, fck, fbk))
 
     data = np.array([[ak, ck, bk, fak, fck, fbk]])
     Data = np.concatenate((Data, data), axis=0)
